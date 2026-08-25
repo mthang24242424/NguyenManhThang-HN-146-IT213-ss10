@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: rikkei-support-agent
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:your-openrouter-api-key-here}
+      base-url: https://openrouter.ai/api/v1
+      chat:
+        options:
+          model: google/gemma-3-27b-it
+    chat:
+      observations:
+        log-prompt: true
+        log-completion: true
+
+langfuse:
+  public-key: pk-lf-local
+  secret-key: sk-lf-local-secret
+  host: http://localhost:3000
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  observations:
+    annotations:
+      enabled: true
+    enable:
+      "http.server.requests": false
+      "http.client.requests": false
+  otlp:
+    metrics:
+      export:
+        enabled: false
+    tracing:
+      endpoint: http://localhost:3000/api/public/otel/v1/traces
+      headers:
+        authorization: "Basic cGstbGYtbG9jYWw6c2stbGYtbG9jYWwtc2VjcmV0"
+        x-langfuse-ingestion-version: "4"
+
+otel:
+  service:
+    name: rikkei-support-agent
+  instrumentation:
+    spring-webmvc:
+      enabled: false
+    spring-web:
+      enabled: false
+
+server:
+  port: 8080

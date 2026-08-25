@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'demoDocker'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springAiVersion', "2.0.1")
+}
+
+dependencies {
+    // ── Spring Boot core ──────────────────────────────────────────────────────
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // ── Spring AI – OpenAI/OpenRouter chat model ──────────────────────────────
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+
+    // ── Langfuse Java SDK – prompt management (fetch remote prompts) ──────────
+    implementation 'com.langfuse:langfuse-java:0.3.0'
+
+    // ── OpenTelemetry tracing for Spring Boot 4 ───────────────────────────────
+    // Native Spring Boot 4 OTel starter (replaces the community io.opentelemetry
+    // starter for Boot 4.x applications)
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
+    // Micrometer → OpenTelemetry bridge so Spring AI observations become OTel spans
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+    // OTLP HTTP exporter – sends spans to Langfuse /api/public/otel endpoint
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+
+    // ── Lombok ────────────────────────────────────────────────────────────────
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // ── Test ──────────────────────────────────────────────────────────────────
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+    }
+}
+
+springBoot {
+    mainClass = 'vn.edu.rikkei.session10.ex07.CustomerSupportAgent'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
