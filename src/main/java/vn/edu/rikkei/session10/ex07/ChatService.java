@@ -15,21 +15,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-/**
- * Core service for the RikkeiMart Customer Support AI Agent.
- *
- * <p>Workflow per user turn:
- * <ol>
- *   <li>Fetch the {@code rikkei-support-prompt} template from Langfuse (once at start-up).</li>
- *   <li>Read user input from the console.</li>
- *   <li>Replace {@code {{user_question}}} with the actual question.</li>
- *   <li>Send to the LLM via Spring AI {@link ChatModel}.</li>
- *   <li>Emit an OpenTelemetry parent span with {@code langfuse.user.id} and
- *       {@code langfuse.session.id} so Langfuse associates the trace with the
- *       correct user and session.</li>
- *   <li>Print the AI answer and token/trace metadata to the console.</li>
- * </ol>
- */
 @Service
 public class ChatService {
 

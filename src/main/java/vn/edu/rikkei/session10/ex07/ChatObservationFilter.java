@@ -12,16 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-/**
- * Adds {@code gen_ai.prompt} and {@code gen_ai.completion} as high-cardinality
- * OpenTelemetry span attributes on every Spring AI chat model observation.
- *
- * <p>Without this filter, even with {@code log-prompt: true} and
- * {@code log-completion: true} in YAML, the content never reaches the OTel spans
- * and therefore never appears in Langfuse.
- *
- * <p>Required by the official Langfuse Spring AI integration guide.
- */
+
 @Component
 public class ChatObservationFilter implements ObservationFilter {
 
